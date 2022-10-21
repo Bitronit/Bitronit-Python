@@ -137,18 +137,6 @@ class BitronitClient:
         """ 
         Get list of all assets.
         :return: List of Asset instance
-        [
-            {
-                "id": 2,
-                "ticker": "ETH",
-                "fullName": "Ethereum",
-                "circulatingSupply": 121822787.43650000,
-                "circulatingSupplyUpdateDate": "2022-08-04T09:00:05.881614Z",
-                "precision": 8,
-                "fiat": false
-            },
-            ...
-        ] 
         """
         path = "assets"
         response_list = self._request("get", path)
@@ -170,7 +158,7 @@ class BitronitClient:
     def get_networks(self, asset: str = None):
         """ 
         Get list of network configurations.
-        :param asset: str, required, Symbol(Ticker) of the asset
+        :param asset: str, optional, Symbol(Ticker) of the asset
         :return: List of NetworkConfig instance
         """
         path = "crypto-network"
@@ -459,7 +447,7 @@ class BitronitClient:
         :return: CryptoExternalTransaction instance
         """
         path = "users/me/withdrawals/crypto"
-        params = {
+        body = {
             "asset": asset,
             "amount": amount,
             "targetAddress": target_address,
@@ -467,7 +455,7 @@ class BitronitClient:
             "network": network,
             "withdrawCryptoFee": fee
         }
-        response_data = self._request("post", path, params, auth=True)
+        response_data = self._request("post", path, body=body, auth=True)
         return json_to_object(response_data, CryptoExternalTransaction())
 
     @authentication_required
