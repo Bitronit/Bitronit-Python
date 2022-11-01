@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="bitronit",
-    version="1.0.1",
+    version="1.1.0",
     author="Bitronit",
     description="Bitronit Python Client",
     long_description=long_description,

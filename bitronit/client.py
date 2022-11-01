@@ -7,6 +7,7 @@ import simplejson as json
 import requests
 from uuid import UUID
 
+from bitronit.models.address import Address
 from bitronit.models.market import Market
 from bitronit.models.tradingpair import TradingPair
 from bitronit.models.withdrawconfig import WithdrawConfig
@@ -425,6 +426,38 @@ class BitronitClient:
         for item in response_list:
             fiat_external_transaction_list.append(json_to_object(item, FiatExternalTransaction()))
         return fiat_external_transaction_list
+
+    @authentication_required
+    def get_address_book(
+        self,
+        whitelisted: bool = None,
+        network: str = None,
+        address: str = None,
+        page: int = None,
+        size: int = None
+    ):
+        """ 
+        Get address book addresses paginated (Authentication Required)
+        :param whitelisted: bool, optional, Whitelist enabled addresses
+        :param network: str, optional, Network of the address
+        :param address: str, optional, Wallet address
+        :param page: int, optional, Page number
+        :param size: int, optional, Number of items per page
+        :return: List of Address instance
+        """
+        path = "users/me/address-book"
+        params = {
+            "whitelisted": whitelisted,
+            "network": network,
+            "address": address,
+            "page": page,
+            "size": size
+        }
+        response_list = self._request("get", path, params, auth=True)
+        address_list: List[Address] = []
+        for item in response_list:
+            address_list.append(json_to_object(item, Address()))
+        return address_list
 
     @authentication_required
     def initiate_crypto_withdraw(
