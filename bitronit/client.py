@@ -508,13 +508,13 @@ class BitronitClient:
         :return: FiatExternalTransaction instance
         """
         path = "users/me/withdrawals/fiat"
-        params = {
+        body = {
             "asset": asset,
             "amount": amount,
             "iban": iban,
             "uuid": uuid
         }
-        response_data = self._request("post", path, params, auth=True)
+        response_data = self._request("post", path, body=body, auth=True)
         return json_to_object(response_data, FiatExternalTransaction())
 
     @authentication_required
